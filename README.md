@@ -66,7 +66,7 @@ later in this document.
 ## Install the SDK
 
 ### Minimum Requirements
-To use the SDK, you will need Java 1.7+. 
+To use the SDK, you will need Java 1.6+. 
 
 ### Install the SDK Using Maven
 The recommended way to use the AWS IoT Device SDK for Java in your project is 
@@ -77,7 +77,7 @@ of your Maven project.
 <dependencies>
   <dependency>
     <groupId>com.amazonaws</groupId>
-    <artifactId>aws-iot-device-sdk-java</artifactId>
+    <artifactId>aws-iot-device-sdk-java6</artifactId>
     <version>1.1.1</version>
   </dependency>
 </dependencies>
