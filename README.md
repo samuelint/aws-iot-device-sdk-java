@@ -1,4 +1,6 @@
-# AWS IoT Device SDK for Java
+# AWS IoT Device SDK for Java 6
+Fork from original AWS 1.1.1 version allowing java 6 support.
+
 The **AWS IoT Device SDK for Java** enables Java developers to access the AWS 
 IoT Platform through [MQTT or MQTT over the WebSocket protocol][aws-iot-protocol]. 
 The SDK is built with [AWS IoT device shadow support][aws-iot-thing], providing 

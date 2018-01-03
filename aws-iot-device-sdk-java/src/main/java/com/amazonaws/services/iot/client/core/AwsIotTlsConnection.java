@@ -19,7 +19,6 @@ import java.security.KeyStore;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.mqtt.AwsIotMqttConnection;
-import com.amazonaws.services.iot.client.util.AwsIotTlsSocketFactory;
 
 /**
  * This is a thin layer on top of {@link AwsIotMqttConnection} that provides a
@@ -29,7 +28,7 @@ public class AwsIotTlsConnection extends AwsIotMqttConnection {
 
     public AwsIotTlsConnection(AbstractAwsIotClient client, KeyStore keyStore, String keyPassword)
             throws AWSIotException {
-        super(client, new AwsIotTlsSocketFactory(keyStore, keyPassword), "ssl://" + client.getClientEndpoint() + ":8883");
+        super(client, new com.amazonaws.services.iot.client.util.bouncy.BouncyTlsSocketFactory(keyStore, keyPassword), "ssl://" + client.getClientEndpoint() + ":8883");
     }
 
 }

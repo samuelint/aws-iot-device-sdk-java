@@ -58,11 +58,14 @@ public class SampleUtil {
         if (resource == null) {
             return null;
         }
-        try (InputStream stream = resource.openStream()) {
+
+        try {
+            InputStream stream = resource.openStream();
             prop.load(stream);
         } catch (IOException e) {
             return null;
         }
+
         String value = prop.getProperty(name);
         if (value == null || value.trim().length() == 0) {
             return null;
@@ -105,7 +108,19 @@ public class SampleUtil {
             Certificate[] certChain = new Certificate[certificates.size()];
             certChain = certificates.toArray(certChain);
             keyStore.setKeyEntry("alias", privateKey, keyPassword.toCharArray(), certChain);
-        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
+        } catch (KeyStoreException e) {
+            System.out.println("Failed to create key store");
+            return null;
+        }
+        catch (NoSuchAlgorithmException e) {
+            System.out.println("Failed to create key store");
+            return null;
+        }
+        catch (CertificateException e) {
+            System.out.println("Failed to create key store");
+            return null;
+        }
+        catch (IOException e) {
             System.out.println("Failed to create key store");
             return null;
         }
@@ -120,10 +135,14 @@ public class SampleUtil {
             return null;
         }
 
-        try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file))) {
+        try {
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
             final CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (List<Certificate>) certFactory.generateCertificates(stream);
-        } catch (IOException | CertificateException e) {
+        } catch (IOException e) {
+            System.out.println("Failed to load certificate file " + filename);
+        }
+        catch (CertificateException e) {
             System.out.println("Failed to load certificate file " + filename);
         }
         return null;
@@ -137,9 +156,13 @@ public class SampleUtil {
             System.out.println("Private key file not found: " + filename);
             return null;
         }
-        try (DataInputStream stream = new DataInputStream(new FileInputStream(file))) {
+        try {
+            DataInputStream stream = new DataInputStream(new FileInputStream(file));
             privateKey = PrivateKeyReader.getPrivateKey(stream, algorithm);
-        } catch (IOException | GeneralSecurityException e) {
+        } catch (IOException e) {
+            System.out.println("Failed to load private key from file " + filename);
+        }
+        catch (GeneralSecurityException e) {
             System.out.println("Failed to load private key from file " + filename);
         }
 

@@ -136,7 +136,7 @@ public class AwsIotMqttConnection extends AwsIotConnection {
     }
 
     public Set<String> getServerUris() {
-        return new HashSet<>();
+        return new HashSet();
     }
 
     private MqttConnectOptions buildMqttConnectOptions(AbstractAwsIotClient client, SocketFactory socketFactory) {

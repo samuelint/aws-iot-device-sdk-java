@@ -60,8 +60,8 @@ public abstract class AbstractAwsIotClient implements AwsIotConnectionCallback {
     protected int maxOfflineQueueSize = AWSIotConfig.MAX_OFFLINE_QUEUE_SIZE;
     protected AWSIotMessage willMessage;
 
-    private final ConcurrentMap<String, AWSIotTopic> subscriptions = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, AbstractAwsIotDevice> devices = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, AWSIotTopic> subscriptions = new ConcurrentHashMap();
+    private final ConcurrentMap<String, AbstractAwsIotDevice> devices = new ConcurrentHashMap();
     private final AwsIotConnection connection;
 
     private ScheduledExecutorService executionService;

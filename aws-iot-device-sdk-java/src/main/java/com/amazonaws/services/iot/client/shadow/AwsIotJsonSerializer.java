@@ -33,7 +33,7 @@ public class AwsIotJsonSerializer extends JsonSerializer<AbstractAwsIotDevice> {
 
     @Override
     public void serialize(AbstractAwsIotDevice device, JsonGenerator generator, SerializerProvider provider)
-            throws IOException, JsonProcessingException {
+        throws IOException, JsonProcessingException {
         generator.writeStartObject();
 
         try {
@@ -54,29 +54,43 @@ public class AwsIotJsonSerializer extends JsonSerializer<AbstractAwsIotDevice> {
         String fieldName = Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1);
         String getter = "get" + fieldName;
 
-        Method method;
+        Method method = null;
         try {
             method = target.getClass().getMethod(getter);
-        } catch (NoSuchMethodException | SecurityException e) {
-            if (e instanceof NoSuchMethodException && boolean.class.equals(field.getType())) {
-                getter = "is" + fieldName;
-                try {
-                    method = target.getClass().getMethod(getter);
-                } catch (NoSuchMethodException | SecurityException ie) {
-                    throw new IllegalArgumentException(ie);
-                }
-            } else {
-                throw new IllegalArgumentException(e);
-            }
+        } catch (NoSuchMethodException e) {
+            method = getMethodAfterException(e, field, method, target, fieldName, getter);
+        } catch (SecurityException e) {
+            method = getMethodAfterException(e, field, method, target, fieldName, getter);
         }
 
         Object value;
         try {
             value = method.invoke(target);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+            throw new IOException(e);
+        } catch (IllegalArgumentException e) {
+            throw new IOException(e);
+        } catch (InvocationTargetException e) {
             throw new IOException(e);
         }
         return value;
+    }
+
+    private static Method getMethodAfterException(Exception e, Field field, Method method, Object target, String fieldName, String getter) throws IllegalArgumentException {
+        if (e instanceof NoSuchMethodException && boolean.class.equals(field.getType())) {
+            getter = "is" + fieldName;
+            try {
+                method = target.getClass().getMethod(getter);
+            } catch (NoSuchMethodException ie) {
+                throw new IllegalArgumentException(ie);
+            } catch (SecurityException ie) {
+                throw new IllegalArgumentException(ie);
+            }
+        } else {
+            throw new IllegalArgumentException(e);
+        }
+
+        return method;
     }
 
 }

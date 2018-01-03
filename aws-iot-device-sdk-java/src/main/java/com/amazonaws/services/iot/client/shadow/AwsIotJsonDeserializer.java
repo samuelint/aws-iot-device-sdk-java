@@ -78,13 +78,22 @@ public class AwsIotJsonDeserializer {
         Method method;
         try {
             method = target.getClass().getMethod(setter, type);
-        } catch (NoSuchMethodException | SecurityException e) {
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(e);
+        }
+        catch (SecurityException e) {
             throw new IllegalArgumentException(e);
         }
 
         try {
             method.invoke(target, value);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+            throw new IOException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IOException(e);
+        }
+        catch (InvocationTargetException e) {
             throw new IOException(e);
         }
     }

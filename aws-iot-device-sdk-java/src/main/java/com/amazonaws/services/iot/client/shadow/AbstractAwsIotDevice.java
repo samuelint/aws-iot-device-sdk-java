@@ -81,7 +81,7 @@ public abstract class AbstractAwsIotDevice {
         updatableProperties = getDeviceProperties(false, true);
         commandManager = new AwsIotDeviceCommandManager(this);
 
-        deviceSubscriptions = new ConcurrentHashMap<>();
+        deviceSubscriptions = new ConcurrentHashMap();
         for (String topic : getDeviceTopics()) {
             deviceSubscriptions.put(topic, false);
         }
@@ -294,7 +294,7 @@ public abstract class AbstractAwsIotDevice {
     }
 
     private Map<String, Field> getDeviceProperties(boolean enableReport, boolean allowUpdate) {
-        Map<String, Field> properties = new HashMap<>();
+        Map<String, Field> properties = new HashMap();
 
         for (Field field : this.getClass().getDeclaredFields()) {
             AWSIotDeviceProperty annotation = field.getAnnotation(AWSIotDeviceProperty.class);
@@ -312,7 +312,7 @@ public abstract class AbstractAwsIotDevice {
     }
 
     private List<String> getDeviceTopics() {
-        List<String> topics = new ArrayList<>();
+        List<String> topics = new ArrayList();
 
         topics.add(commandManager.getTopic(Command.DELTA, null));
 

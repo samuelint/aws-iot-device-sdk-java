@@ -54,7 +54,7 @@ public class AwsIotWebsocketConnection extends AwsIotMqttConnection {
 
     @Override
     public Set<String> getServerUris() {
-        Set<String> uris = new HashSet<>();
+        Set<String> uris = new HashSet();
         try {
             uris.add(urlSigner.getSignedUrl(null));
         } catch (AWSIotException e) {

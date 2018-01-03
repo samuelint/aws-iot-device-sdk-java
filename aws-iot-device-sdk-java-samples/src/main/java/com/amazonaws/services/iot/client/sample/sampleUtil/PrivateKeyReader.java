@@ -65,8 +65,11 @@ public class PrivateKeyReader {
      *             GeneralSecurityException resulted from invalid key format
      */
     public static PrivateKey getPrivateKey(String fileName) throws IOException, GeneralSecurityException {
-        try (InputStream stream = new FileInputStream(fileName)) {
+        try {
+            InputStream stream = new FileInputStream(fileName);
             return getPrivateKey(stream, null);
+        } catch (IOException e) {
+            return null;
         }
     }
 
@@ -85,8 +88,11 @@ public class PrivateKeyReader {
      */
     public static PrivateKey getPrivateKey(String fileName, String algorithm) throws IOException,
             GeneralSecurityException {
-        try (InputStream stream = new FileInputStream(fileName)) {
+        try {
+            InputStream stream = new FileInputStream(fileName);
             return getPrivateKey(stream, algorithm);
+        } catch (IOException e) {
+            return null;
         }
     }
 
@@ -270,7 +276,7 @@ class DerParser {
 
     /**
      * Create a new DER decoder from a byte array.
-     * 
+     *
      * @param The
      *            encoded bytes
      * @throws IOException
